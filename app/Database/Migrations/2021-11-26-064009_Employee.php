@@ -20,27 +20,29 @@ class Employee extends Migration
                 'constraint'     => 10,
                 'unsigned'       => true,
             ],
-            'nama'       => [
-                'type'       => 'VARCHAR',
-                'constraint' => '100',
+            'nama'          => [
+                'type'          => 'VARCHAR',
+                'constraint'    => '100',
             ],
-            'alamat'       => [
-                'type'       => 'VARCHAR',
-                'constraint' => '255',
+            'alamat'        => [
+                'type'          => 'VARCHAR',
+                'constraint'    => '255',
             ],
-            'photo'       => [
-                'type'       => 'VARCHAR',
-                'constraint' => '255',
+            'photo'         => [
+                'type'          => 'VARCHAR',
+                'constraint'    => '255',
             ],
-            'created_at'       => [
+            'created_at'     => [
+                'type'          => 'datetime',
+                'null'          => TRUE
+            ],
+            'updated_at'      => [
                 'type'       => 'datetime',
-            ],
-            'updated_at'       => [
-                'type'       => 'datetime',
+                'null'      => TRUE
             ]
 
         ]);
-        $this->forge->addKey('employee_id', true);
+        $this->forge->addKey('id', true);
         $this->forge->createTable('employee');
     }
 

@@ -1,6 +1,7 @@
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('content'); ?>
+
 <div class="container">
     <div class="row">
         <div class="col">
@@ -19,11 +20,13 @@
                 <tbody>
                     <tr>
                         <th scope="row">1</th>
-                        <td><img src="" alt=""></td>
+                        <td><img src="/img/photo.png" alt="" class="photo"></td>
                         <td>3018</td>
                         <td>Ikbal Ardhi</td>
                         <td>jl. ABS</td>
-                        <td>@mdo</td>
+                        <td>
+                            <a href="" class="btn btn-primary">Detail</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
