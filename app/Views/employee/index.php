@@ -1,11 +1,16 @@
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('content'); ?>
-
 <div class="container">
     <div class="row">
         <div class="col">
+            <a href="/employee/create" class="btn btn-primary mt-3">Add Data Employee</a>
             <h1 class="mt-2">Daftar Employee</h1>
+            <?php if (session()->getFlashdata('pesan')) : ?>
+                <div class="alert alert-success" role="alert">
+                    <?= session()->getFlashdata('pesan'); ?>
+                </div>
+            <?php endif; ?>
             <table class="table">
                 <thead>
                     <tr>
@@ -18,21 +23,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td><img src="/img/photo.png" alt="" class="photo"></td>
-                        <td>3018</td>
-                        <td>Ikbal Ardhi</td>
-                        <td>jl. ABS</td>
-                        <td>
-                            <a href="" class="btn btn-primary">Detail</a>
-                        </td>
-                    </tr>
+                    <?php $no = 1;
+                    foreach ($emp as $e) : ?>
+                        <tr>
+                            <th scope="row"><?= $no++; ?></th>
+                            <td><img src="/img/<?= $e['photo']; ?>" alt="" class="photo"></td>
+                            <td><?= $e['nik']; ?></td>
+                            <td><?= $e['nama']; ?></td>
+                            <td><?= $e['alamat']; ?></td>
+                            <td>
+                                <a href="/employee/<?= $e['slug']; ?>" class="btn btn-primary">Detail</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-
 <?= $this->endSection(); ?>

@@ -16,15 +16,18 @@ class Employee extends Migration
                 'auto_increment' => true,
             ],
             'nik'          => [
-                'type'           => 'INT',
+                'type'           => 'varchar',
                 'constraint'     => 10,
-                'unsigned'       => true,
             ],
             'nama'          => [
                 'type'          => 'VARCHAR',
                 'constraint'    => '100',
             ],
             'alamat'        => [
+                'type'          => 'VARCHAR',
+                'constraint'    => '255',
+            ],
+            'slug'        => [
                 'type'          => 'VARCHAR',
                 'constraint'    => '255',
             ],

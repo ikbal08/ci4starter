@@ -33,6 +33,10 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Employee::index');
 
+$routes->get('/employee/create', 'Employee::create');
+$routes->get('/employee/(:any)', 'Employee::detail/$1');
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

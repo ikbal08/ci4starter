@@ -6,7 +6,6 @@ use CodeIgniter\Model;
 
 class EmployeeModel extends Model
 {
-    protected $DBGroup          = 'ci4started';
     protected $table            = 'employee';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
@@ -14,7 +13,7 @@ class EmployeeModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['nik', 'nama', 'slug', 'alamat', 'photo'];
 
     // Dates
     protected $useTimestamps = true;
@@ -23,20 +22,12 @@ class EmployeeModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
-    protected $cleanValidationRules = true;
+    public function getEmployee($slug = false)
+    {
+        if ($slug == false) {
+            return $this->findAll();
+        }
 
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+        return $this->where(['slug' => $slug])->first();
+    }
 }
