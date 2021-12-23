@@ -32,7 +32,7 @@ class Employee extends BaseController
             'emp'   => $this->employeeModel->getEmployee($slug)
         ];
 
-        if (empty($data['komik'])) {
+        if (empty($data['emp'])) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Employee ' . $slug . ' Not Exist!');
         }
 
@@ -64,6 +64,6 @@ class Employee extends BaseController
 
         session()->setFlashdata('pesan', 'Data saved successfully');
 
-        return redirect()->to('/');
+        return redirect()->to('/employee');
     }
 }
