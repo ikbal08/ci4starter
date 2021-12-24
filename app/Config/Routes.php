@@ -34,6 +34,8 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Employee::index');
 
 $routes->get('/employee/create', 'Employee::create');
+$routes->get('/employee/edit/(:segment)', 'Employee::edit/$1');
+$routes->delete('/employee/(:num)', 'Employee::delete/$1');
 $routes->get('/employee/(:any)', 'Employee::detail/$1');
 
 
