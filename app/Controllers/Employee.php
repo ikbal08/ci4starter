@@ -60,11 +60,29 @@ class Employee extends BaseController
                     'is_unique' => '{field} karyawan sudah terdaftar'
                 ]
             ],
-            'photo' => 'uploaded[photo]'
+            'photo' => [
+                'rules' => 'max_size[photo,1024]|mime_in[photo,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'max_size'  => 'Ukuran gambar terlalu besar',
+                    'is_image'  => 'Yang anda pilih bukan gambar',
+                    'mime_in'  => 'Yang anda pilih bukan gambar'
+                ]
+            ]
         ])) {
 
             // return redirect()->to('/employee/create')->withInput()->with('validation', $validation);
             return redirect()->to('/employee/create')->withInput();
+        }
+
+        // ambil gambar
+        $filePhoto = $this->request->getFile('photo');
+        if ($filePhoto->getError() == 4) {
+            $namaPhoto = 'default.png';
+        } else {
+            // generate nama random
+            $namaPhoto = $filePhoto->getRandomName();
+            // pindahkan photo ke folder
+            $filePhoto->move('img', $namaPhoto);
         }
 
         $post = $this->request->getVar();
@@ -76,7 +94,7 @@ class Employee extends BaseController
             'nama'      => $post['nama'],
             'slug'      => $slug,
             'alamat'    => $post['alamat'],
-            'photo'     => $post['photo']
+            'photo'     => $namaPhoto
         ]);
 
         session()->setFlashdata('pesan', 'Data saved successfully');
@@ -87,7 +105,7 @@ class Employee extends BaseController
     public function edit($slug)
     {
         $data = [
-            'title'         => 'Add Data Employee',
+            'title'         => 'Edit Data Employee',
             'validation'    => \Config\Services::validation(),
             'emp'           => $this->employeeModel->getEmployee($slug)
         ];
@@ -115,10 +133,33 @@ class Employee extends BaseController
                     'required' => '{field} karyawan tidak boleh kosong',
                     'is_unique' => '{field} karyawan sudah terdaftar'
                 ]
+            ],
+            'photo' => [
+                'rules' => 'max_size[photo,1024]|mime_in[photo,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'max_size'  => 'Ukuran gambar terlalu besar',
+                    'is_image'  => 'Yang anda pilih bukan gambar',
+                    'mime_in'  => 'Yang anda pilih bukan gambar'
+                ]
             ]
         ])) {
-            $validation = \Config\Services::validation();
-            return redirect()->to('/employee/edit/' . $post['slug'])->withInput()->with('validation', $validation);
+
+            return redirect()->to('/employee/edit/' . $post['slug'])->withInput();
+        }
+
+        // ambil gambar
+        $filePhoto = $this->request->getFile('photo');
+        $photoLama = $this->request->getVar('photoLama');
+
+        if ($filePhoto->getError() == 4) {
+            $namaPhoto = $photoLama;
+        } else {
+            // generate nama random
+            $namaPhoto = $filePhoto->getRandomName();
+            // pindahkan photo ke folder
+            $filePhoto->move('img', $namaPhoto);
+            // hapus file lama
+            unlink('img/' . $photoLama);
         }
 
 
@@ -131,7 +172,7 @@ class Employee extends BaseController
             'nama'      => $post['nama'],
             'slug'      => $slug,
             'alamat'    => $post['alamat'],
-            'photo'     => $post['photo']
+            'photo'     => $namaPhoto
         ]);
 
         session()->setFlashdata('pesan', 'Data updated successfully');
@@ -141,8 +182,15 @@ class Employee extends BaseController
 
     public function delete($id)
     {
-        $this->employeeModel->delete($id);
+        // cari data berdasarkan id
+        $emp = $this->employeeModel->find($id);
 
+        // cek jika file gambar default.png
+        if ($emp['photo'] != 'default.png') {
+            unlink('img/' . $emp['photo']);
+        }
+
+        $this->employeeModel->delete($id);
         session()->setFlashdata('pesan', 'Data deleted successfully');
 
         return redirect()->to('/employee');

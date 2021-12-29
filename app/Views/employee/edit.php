@@ -5,9 +5,10 @@
     <div class="row">
         <div class="col-8">
             <h2 class="my-3">Update Data Employee</h2>
-            <form action="/employee/update/<?= $emp['id']; ?>" method="POST">
+            <form action="/employee/update/<?= $emp['id']; ?>" method="POST" enctype="multipart/form-data">
                 <?= csrf_field(); ?>
                 <input type="hidden" name="slug" value="<?= $emp['slug']; ?>">
+                <input type="hidden" name="photoLama" value="<?= $emp['photo']; ?>">
                 <div class="row mb-3">
                     <label for="nama" class="col-sm-2 col-form-label">NIK</label>
                     <div class="col-sm-10">
@@ -31,8 +32,17 @@
                 </div>
                 <div class=" row mb-3">
                     <label for="photo" class="col-sm-2 col-form-label">Photo</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="photo" name="photo" value="<?= (old('photo')) ? old('photo') : $emp['photo']; ?>">
+                    <div class="col-sm-2">
+                        <img src="/img/<?= $emp['photo']; ?>" class="img-thumbnail img-preview">
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="custom-file">
+                            <input class="form-control custom-file-input <?= ($validation->hasError('photo')) ? 'is-invalid' : ''; ?>" type="file" id="photo" name="photo" onchange="loadImg();">
+                            <div class=" invalid-feedback">
+                                <?= $validation->getError('photo'); ?>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
