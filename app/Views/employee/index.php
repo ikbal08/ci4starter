@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $no = 1;
+                    <?php $no = 1 + ($perpage * ($current_page - 1));
                     foreach ($emp as $e) : ?>
                         <tr>
                             <th scope="row"><?= $no++; ?></th>
@@ -38,6 +38,7 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <?= $pager->links('employee', 'employee_pagination'); ?>
         </div>
     </div>
 </div>

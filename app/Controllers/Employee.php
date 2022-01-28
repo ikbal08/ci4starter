@@ -17,9 +17,16 @@ class Employee extends BaseController
     public function index()
     {
 
+        $current = $this->request->getVar('page_employee') ? $this->request->getVar('page_employee') : 1;
+        $perpage = '3';
+
         $data = [
-            'title' => 'Daftar Employee',
-            'emp'   => $this->employeeModel->getEmployee()
+            'title'         => 'Daftar Employee',
+            //emp'   => $this->employeeModel->getEmployee()
+            'perpage'       => $perpage,
+            'emp'           => $this->employeeModel->paginate($perpage, 'employee'),
+            'pager'         => $this->employeeModel->pager,
+            'current_page'  => $current
         ];
 
         return view('employee/index', $data);
